@@ -3,6 +3,8 @@
 ## 引言
 在之前的代码中，要连接的WIFI信息都已写死在代码里，这显然不能适应我们的需求。所以需要想个办法让用户可以配置这些信息。
 
+
+
 ## WIFI工作模式
 
 NodeMCU支持STATION，SOFTAP，STATIONAP，NULLMODE四种模式。
@@ -16,9 +18,11 @@ NodeMCU支持STATION，SOFTAP，STATIONAP，NULLMODE四种模式。
 
 所以可以添加一个按钮，当按钮按下时，转换模式为`WIFI.STATIONAP`，然后通过手机接入NodeMCU的热点，进入设置页面配置WIFI信息。就像配置路由器一样。
 
+
+
 ## 接线
 
-![wiring.jpg](wiring.jpg)
+![img/wiring.jpg](wiring.jpg)
 
 * 绿色的LED就是未来被远程控制的那颗，正极连接D1。
 
@@ -41,6 +45,8 @@ gpio.mode(IO_BTN_CFG, gpio.INT)
 ```
 
 注意，`IO_BTN_CFG`被设置为了`gpio.INT`模式，也就是中断模式。
+
+
 
 ## 响应按钮
 
@@ -80,6 +86,8 @@ gpio.trig(IO_BTN_CFG, 'up', onBtnEvent)
 
  思路是，在首次触发之后，清除按钮的回调函数，在0.5秒后，恢复回调。
 
+
+
 ## 开始与结束配置
 
 正如之前所讲，平常运行时WIFI模式为`wifi.STATION`，当按下按钮后，WIFI模式转为`wifi.STATIONAP`，再次按下后恢复`wifi.STATION`。
@@ -108,6 +116,8 @@ switchCfg()
 
 这样就可以通过按钮来控制AP的开启关闭了。
 
+
+
 ## 配置热点信息
 
 在`print('Setting up WIFI...')`后添加下行代码，来配置热点名为 **'mymcu'** ，安全性为**开放**。
@@ -123,3 +133,9 @@ wifi.ap.config({ ssid = 'mymcu', auth = AUTH_OPEN })
 最后，删去之前写死在代码里的WIFI连接配置`wifi.sta.config('MY_SSID', 'MY_PASSWORD')`。
 
 因为随后，我们将提供操作界面，让用户自己来设置它们。
+
+
+
+## 相关资源
+
+你可以在[NodeMCU-Tutorial](https://github.com/wangzexi/NodeMCU-Tutorial)下载到本文的相关资源和代码。

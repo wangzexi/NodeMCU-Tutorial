@@ -6,13 +6,11 @@
 
 * 在NodeMCU上搭建HTTP服务器，使其可以通过Web页面配置要接入的网络。
 
-
 * 在配置页面可以显示附近中英网络名与信号强度。
-
 
 * 使用MQTT协议与Node.js服务端的通信。
 
-![nodemcu](nodemcu.jpg)
+![nodemcu](img/nodemcu.jpg)
 
 
 
@@ -34,13 +32,13 @@
 
 在**Config**选项卡下，配置好自己固件的路径。
 
-![flasher-config](flasher-config.png)
+![flasher-config](img/flasher-config.png)
 
 然后回到**Operation**下，点击**Flash(F)**，稍等片刻即可。
 
-![flasher-flashing](flasher-flashing.png)
+![flasher-flashing](img/flasher-flashing.png)
 
-![flasher-finished](flasher-finished.png)
+![flasher-finished](img/flasher-finished.png)
 
 
 
@@ -56,7 +54,7 @@
 
 点击**Open**，按下NodeMCU上的**RST**按钮重启。如果一切正常，会有这些输出：
 
-![esplorer-open](esplorer-open.png)
+![esplorer-open](img/esplorer-open.png)
 
 NodeMCU会在启动后立即运行**init.lua**，但是现在我们还没有上传这个文件。
 
@@ -81,15 +79,15 @@ end)
 
 保存后，点击ESPlorer窗口左下区域的**Upload ...**来上传。如果上传失败，尝试重启NodeMCU再试。
 
-![esplorer-upload](esplorer-upload.png)
+![esplorer-upload](img/esplorer-upload.png)
 
 上传完毕后重启NodeMCU。如果一切正常，你将看到NodeMCU成功连入你的AP。
 
-![esplorer-ok](esplorer-ok.png)
+![esplorer-ok](img/esplorer-ok.png)
 
 
 
-## 资源
+## 相关资源
 
 [NodeMCU文档](http://nodemcu.readthedocs.io/)
 
@@ -98,3 +96,5 @@ end)
 [nodemcu-flasher](https://github.com/nodemcu/nodemcu-flasher)
 
 [ESPlorer.zip](http://esp8266.ru/esplorer/#download)
+
+你也可以在[NodeMCU-Tutorial](https://github.com/wangzexi/NodeMCU-Tutorial)下载到本文的相关资源和代码。

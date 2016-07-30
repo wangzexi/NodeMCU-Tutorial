@@ -50,6 +50,8 @@ wifi.sta.eventMonReg(wifi.STA_CONNECTING, function(previous_State)
 end)
 ```
 
+
+
 ## 断线自动重连
 
 有时因为路由器重启等原因，NodeMCU可能会掉线，好在NodeMCU可以设置自动连接：
@@ -65,6 +67,8 @@ wifi.sta.autoconnect(1)
 ```
 
 这样，当配置的wifi有效时，NodeMCU便能自动连入。
+
+
 
 ## 控制LED闪烁
 
@@ -112,6 +116,8 @@ blinking(gpio.LOW) -- 常亮
 blinking(gpio.HIGH) -- 常灭
 ```
 
+
+
 ## 闪烁显示连接状态
 
 现在就可以结合监听器用LED显示连接状态了。
@@ -144,3 +150,8 @@ wifi.sta.eventMonReg(wifi.STA_GOTIP, function()
 end)
 ```
 
+
+
+## 相关资源
+
+你可以在[NodeMCU-Tutorial](https://github.com/wangzexi/NodeMCU-Tutorial)下载到本文的相关资源和代码。
