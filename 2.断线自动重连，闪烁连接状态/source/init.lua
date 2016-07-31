@@ -7,7 +7,7 @@ TMR_BLINK = 5
 gpio.mode(IO_BLINK, gpio.OUTPUT)
 
 -------------
--- blinking
+-- blink
 -------------
 blink = nil
 tmr.register(TMR_BLINK, 100, tmr.ALARM_AUTO, function()

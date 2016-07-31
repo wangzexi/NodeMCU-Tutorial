@@ -6,6 +6,7 @@ IO_LED_AP = 2
 IO_BTN_CFG = 3
 IO_BLINK = 4
 
+TMR_WIFI = 4
 TMR_BLINK = 5
 TMR_BTN = 6
 
@@ -32,9 +33,11 @@ gpio.write(IO_LED_AP, gpio.LOW)
 function switchCfg()
 	if wifi.getmode() == wifi.STATION then
 		wifi.setmode(wifi.STATIONAP)
+		httpServer:listen(80)
 		gpio.write(IO_LED_AP, gpio.HIGH)
 	else
 		wifi.setmode(wifi.STATION)
+		httpServer:close()
 		gpio.write(IO_LED_AP, gpio.LOW)
 	end
 end
@@ -100,3 +103,40 @@ wifi.sta.eventMonReg(wifi.STA_GOTIP, function()
 end)
 
 wifi.sta.eventMonStart(1000)
+
+-------------
+-- http
+-------------
+dofile('httpServer.lua')
+
+httpServer:use('/config', function(req, res)
+	if req.query.ssid ~= nil and req.query.pwd ~= nil then
+		wifi.sta.config(req.query.ssid, req.query.pwd)
+
+		status = 'STA_CONNECTING'
+		tmr.alarm(TMR_WIFI, 1000, tmr.ALARM_AUTO, function()
+			if status ~= 'STA_CONNECTING' then
+				res:type('application/json')
+				res:send('{"status":"' .. status .. '"}')
+				tmr.stop(TMR_WIFI)
+			end
+		end)
+	end
+end)
+
+httpServer:use('/scanap', function(req, res)
+	wifi.sta.getap(function(table)
+		local aptable = {}
+		for ssid,v in pairs(table) do
+			local authmode, rssi, bssid, channel = string.match(v, "([^,]+),([^,]+),([^,]+),([^,]+)")
+			aptable[ssid] = {
+				authmode = authmode,
+				rssi = rssi,
+				bssid = bssid,
+				channel = channel
+			}
+		end
+		res:type('application/json')
+		res:send(cjson.encode(aptable))
+	end)
+end)

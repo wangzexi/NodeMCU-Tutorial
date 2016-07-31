@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>配置终端</title>
+</head>
+<style>
+	.grid-hero {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+	.bg-grey {
+		background-color: #efefef;
+		padding: 1rem;
+	}
+	header > h3 {
+		margin: 0;
+		padding: 4rem;
+	}
+</style>
+
+<body>
+	<section class="section bg-grey">
+		<section class="grid-hero container grid-480">
+			<header class="text-center"><h3>配置终端</h3></header>
+			<section>
+				<p>配置终端接入一个无线网络。</p>
+			</section>
+		</section>
+	</section>
+
+	<section class="section">
+		<section class="container grid-480">
+			<header class="text-center"><h4>网络配置</h4></header>
+			<form>
+				<div class="form-group">
+					<label class="form-label" for="select-ap">让我连接到</label>
+						<div class="input-group">
+							<input type="text" id="ssid" class="form-input" placeholder="无线网络名">
+							<button type="button" id="scanap" class="btn btn-link input-group-btn">附近网络</button>
+						</div>
+					</div>
+		    	</div>
+
+				<div class="form-group">
+			        <label class="form-label" for="input-pwd">网络密码</label>
+			        	<input id="pwd" class="form-input" type="password" id="input-pwd" placeholder="无线网络密码（无密码请留空）">
+				</div>
+
+				<button type="button" id="connect" class="btn btn-primary float-right">连接网络</button>
+			</form>
+		</section>
+	</section>
+
+	<div id="selectwifi" class="modal">
+	    <div class="modal-overlay"></div>
+	    <div class="modal-container">
+	        <div class="modal-header">
+	            <div class="modal-title">选择一个无线网络</div>
+	        </div>
+	        <div id="aplist" class="modal-body"></div>
+	    </div>
+	</div>
+
+	<script id="item-ap" type="text/html">
+		<div class="chip hand">
+			<svg width="30px" height="20px" class="chip-icon">
+				<path d="M15,20 L0.86,5.86 A20,20 0 0,1 29.14,5.86" fill="#d0d0d0" />
+				<path d="M15,20 L{0},{1} A{2},{2} 0 0,1 {3},{1}" fill="#adadad" />
+			</svg>
+			<span class="chip-content">{4}</span>
+		</div>
+	</script>
+	
+	<link href="spectre.min.css" rel="stylesheet">
+	<script src="zepto.min.js"></script>
+
+	<script>
+		String.prototype.format = function() {
+			var args = arguments;
+			return this.replace(/\{(\d+)\}/g
+				, function(m,i) {
+					return args[i];
+			});
+		}
+
+		$(function() {
+			$('#connect').click(function() {
+				$('#connect').addClass('loading').prop('disabled', true);
+
+				$.get('../config?ssid={0}&pwd={1}'.format($('#ssid').val(), $('#pwd').val())
+					, function(resJson) {
+					$('#connect').removeClass('loading').prop('disabled', false);
+					switch(resJson.status) {
+					case 'STA_GOTIP':
+						alert('连接成功！');
+						break;
+					case 'STA_WRONGPWD':
+						alert('无线网络密码错误！');
+						break;
+					case 'STA_APNOTFOUND':
+						alert('找不到该网络。');
+					}
+				});
+			});
+
+			$('#scanap').click(function() {
+				$('#scanap').addClass('loading').prop('disabled', true);
+
+				$.get('../scanap', function(resJson) {
+					$('#scanap').removeClass('loading').prop('disabled', false);
+
+					var template = $('#item-ap').html();
+					var cos45 = sin45 = 0.70710678118655;
+					var html = '';
+					for(ssid in resJson) {
+						var r = 0.3333 * parseInt(resJson[ssid].rssi) + 33.3333;
+						r = r > 20 ? 20 : (r < 0 ? 0 : r)
+
+						html += template.format(
+							15 - r * cos45
+							, 20 - r * sin45
+							, r
+							, 15 + r * cos45
+							, ssid
+						);
+					}
+					$('#aplist').html(html)
+					$('#selectwifi').addClass('active');
+
+					$("#aplist div").click(function() {
+						$('#selectwifi').removeClass('active');
+
+						var ssid = $(this).children('.chip-content').html()
+						$('#ssid').val(ssid);						
+					});
+				});
+			});
+		})
+	</script>
+</body>
+</html>
