@@ -55,15 +55,15 @@ end
 
 上传**init.lua**、**httpServer.lua**以及**index.html**到NodeMCU。
 
-按下**RST**按钮，按下**配置**按钮，用手机连入热点**mymcu**，在浏览器打开**http://192.168.4.1/**。
+按下**RST**按钮，按下**配置**按钮，用手机连入热点**mymcu**，在浏览器打开 **http://192.168.4.1/** 。
 
 如果一切正常，你将能够看到这个页面。
 
 ### GZIP压缩
 
-为了节省空间，HTTP服务支持GZIP。比如：**index.html**可以压缩为**index.html.gz**再上传。
+为了节省空间，此HTTP服务库还支持GZIP。比如：**index.html**可以压缩为**index.html.gz**再上传。
 
-更多细节，请参阅[NodeMCU-HTTP-Server](https://github.com/wangzexi/NodeMCU-HTTP-Server)。
+更多细节，请参阅[NodeMCU-HTTP-Server](https://github.com/wangzexi/NodeMCU-HTTP-Server#serving-static-files)。
 
 ### 设置IP地址
 
