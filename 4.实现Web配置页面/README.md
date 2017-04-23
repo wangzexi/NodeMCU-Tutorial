@@ -99,6 +99,8 @@ httpServer:use('/scanap', function(req, res)
 end)
 ```
 
+注意：由于NodeMCU内存很小，附近热点过多时，扫描热点会造成内存不足自动重启。此时请手动输入WIFI信息进行配置。
+
 #### 配置WIFI信息
 
 同样添加一个中间件，当带参数访问**'/config'**时，配置WIFI信息，并返回连接结果。
